@@ -1,9 +1,12 @@
+import java.io.ObjectInputStream.GetField;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Scanner;
+
+import utils.jdbcUtil;
 
 public class MainClass {
 
@@ -20,10 +23,10 @@ public class MainClass {
 			if (cmd == 0)
 				break;
 			else if (cmd == 1) {
-
-				Class.forName("com.mysql.cj.jdbc.Driver"); // 1. load driver
-				Connection con = DriverManager.getConnection("jdbc:mysql://remotemysql.com:3306/AutgEfreya",
-						"AutgEfreya", "q6qkzXDL12"); // 2. create Connection
+//				Class.forName("com.mysql.cj.jdbc.Driver"); // 1. load driver
+//				Connection con = DriverManager.getConnection("jdbc:mysql://remotemysql.com:3306/AutgEfreya",
+//						"AutgEfreya", "q6qkzXDL12"); // 2. create Connection
+				Connection con = jdbcUtil.getConnection();
 				Statement st = con.createStatement(); // 3. create statement
 				ResultSet rs = st.executeQuery("SELECT * FROM Category"); // execute statement
 				System.out.println("Your result: ");
@@ -36,9 +39,10 @@ public class MainClass {
 			} else if (cmd == 2) {
 				System.out.println("Please enter ID: ");
 				int id = scan.nextInt();
-				Class.forName("com.mysql.cj.jdbc.Driver"); // 1. load driver
-				Connection con = DriverManager.getConnection("jdbc:mysql://remotemysql.com:3306/AutgEfreya",
-						"AutgEfreya", "q6qkzXDL12"); // 2. create Connection
+				Connection con = jdbcUtil.getConnection();
+//				Class.forName("com.mysql.cj.jdbc.Driver"); // 1. load driver
+//				Connection con = DriverManager.getConnection("jdbc:mysql://remotemysql.com:3306/AutgEfreya",
+//						"AutgEfreya", "q6qkzXDL12"); // 2. create Connection
 				// Statement st = con.createStatement(); // 3. create statement
 				// ResultSet rs = st.executeQuery("SELECT * FROM Category WHERE ID= " + id);
 				// //execute statement
@@ -56,9 +60,10 @@ public class MainClass {
 				scan.nextLine(); // xu ly ky tu ENTER -> clear buffer /flush
 				System.out.println("Please ENTER keyword: ");
 				String keyword = scan.nextLine();
-				Class.forName("com.mysql.cj.jdbc.Driver"); // 1. load driver
-				Connection con = DriverManager.getConnection("jdbc:mysql://remotemysql.com:3306/AutgEfreya",
-						"AutgEfreya", "q6qkzXDL12"); // 2. create Connection
+				Connection con = jdbcUtil.getConnection();
+//				Class.forName("com.mysql.cj.jdbc.Driver"); // 1. load driver
+//				Connection con = DriverManager.getConnection("jdbc:mysql://remotemysql.com:3306/AutgEfreya",
+//						"AutgEfreya", "q6qkzXDL12"); // 2. create Connection
 				PreparedStatement pst = con.prepareStatement("SELECT * FROM Category WHERE NAME LIKE ?");
 				pst.setString(1, "%" + keyword + "%");
 				ResultSet rs = pst.executeQuery();
