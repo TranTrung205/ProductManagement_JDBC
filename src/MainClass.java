@@ -2,7 +2,9 @@ import java.util.List;
 import java.util.Scanner;
 
 import daos.CategoryDAO;
+import daos.ProductDAO;
 import entities.Category;
+import entities.Product;
 
 public class MainClass {
 
@@ -15,8 +17,14 @@ public class MainClass {
 			System.out.println("2.Get details a category");
 			System.out.println("3.Search category");
 			System.out.println("4.Add new category");
-			System.out.println("5.Update category");
+			System.out.println("5.Update a category");
 			System.out.println("6.Delete a record");
+			System.out.println("7.Get all products");
+			System.out.println("8.Get details a product");
+			System.out.println("9.Search product");
+			System.out.println("10.Add new product");
+			System.out.println("11.Update a product");
+			System.out.println("12.Delete a product");
 			System.out.println("Please enter cmd: ");
 			int cmd = scan.nextInt();
 			if (cmd == 0)
@@ -95,9 +103,8 @@ public class MainClass {
 					System.out.println(cat.id + " | " + cat.name);
 				}
 //				con.close();
-			}
-			else if(cmd ==4) {
-				scan.nextLine(); //flush || clear buffer
+			} else if (cmd == 4) {
+				scan.nextLine(); // flush || clear buffer
 				System.out.println("Please input name to insert: ");
 				String name = scan.nextLine();
 				Category newCat = new Category(0, name);
@@ -109,15 +116,13 @@ public class MainClass {
 //					System.out.println("INSERT FAIL !!!");
 //				}
 				int newID = CategoryDAO.insert2int(newCat);
-				if(newID > 0) {
+				if (newID > 0) {
 					System.out.println("INSERT OK with ID : " + newID);
-				}
-				else {
+				} else {
 					System.out.println("INSERT FAIL");
 				}
-					
-			}
-			else if(cmd == 5) {
+
+			} else if (cmd == 5) {
 				System.out.println("Please input ID you want to update: ");
 				int newID = scan.nextInt();
 				scan.nextLine();
@@ -125,21 +130,87 @@ public class MainClass {
 				String newName = scan.nextLine();
 				Category newCat = new Category(newID, newName);
 				boolean result = CategoryDAO.update(newCat);
-				if(result) {
+				if (result) {
 					System.out.println("INSERT OK");
-				}
-				else {
+				} else {
 					System.out.println("INSERT FAIL !!!");
 				}
-			}
-			else if (cmd == 6) {
+			} else if (cmd == 6) {
 				System.out.println("Please input ID you want to remove: ");
 				int removeID = scan.nextInt();
 				boolean result = CategoryDAO.delete(removeID);
-				if(result) {
+				if (result) {
 					System.out.println("DELETE OK");
+				} else {
+					System.out.println("DELETE FAIL !!!");
 				}
-				else {
+			} else if (cmd == 7) {
+				List<Product> products = ProductDAO.getAll();
+				for (Product prod : products) {
+					int catID = prod.catID;
+					Category cat = CategoryDAO.getDetails(catID);
+					System.out.println(
+							prod.id + " | " + prod.name + " | " + prod.price + " | " + prod.catID + "." + cat.name);
+				}
+			} else if (cmd == 8) {
+				System.out.println("Please input ID: ");
+				int id = scan.nextInt();
+				Product prod = new ProductDAO().getProductDetail(id);
+				int catID = prod.catID;
+				Category cat = CategoryDAO.getDetails(catID);
+				if (prod != null) {
+					System.out.println(
+							prod.id + " | " + prod.name + " | " + prod.price + " | " + prod.catID + "." + cat.name);
+				}
+			} else if (cmd == 9) {
+				System.out.println("Please input Threshold: ");
+				int threshold = scan.nextInt();
+				List<Product> prods = ProductDAO.search(threshold);
+				for (Product prod : prods) {
+					int catID = prod.catID;
+					Category cat = CategoryDAO.getDetails(catID);
+					System.out.println(
+							prod.id + " | " + prod.name + " | " + prod.price + " | " + prod.catID + "." + cat.name);
+				}
+			} else if (cmd == 10) {
+				scan.nextLine();
+				System.out.println("Please input new Name: ");
+				String newName = scan.nextLine();
+				System.out.println("Please input new Price: ");
+				int newPrice = scan.nextInt();
+				System.out.println("Please input new CatID: ");
+				int newCatID = scan.nextInt();
+				Product newProd = new Product(0, newName, newPrice, newCatID);
+				int newID = ProductDAO.insert(newProd);
+				if (newID > 0) {
+					System.out.println("INSERT OK with ID : " + newID);
+				} else {
+					System.out.println("INSERT FAIL");
+				}
+			} else if (cmd == 11) {
+				System.out.println("Please input ID: ");
+				int id = scan.nextInt();
+				scan.nextLine();
+				System.out.println("Please input new Name: ");
+				String newName = scan.nextLine();
+				System.out.println("Please input new Price: ");
+				int newPrice = scan.nextInt();
+				System.out.println("Please input new CatID: ");
+				int newCatID = scan.nextInt();
+				Product newProd = new Product(id, newName, newPrice, newCatID);
+				boolean result = ProductDAO.update(newProd);
+				if (result) {
+					System.out.println("Update OK");
+				} else {
+					System.out.println("Update FAIL !!!");
+				}
+			} else if (cmd == 12) {
+				System.out.println("Please input ID you want to remove: ");
+				int removeID = scan.nextInt();
+				boolean result = ProductDAO.delete(removeID);
+				if (result) {
+					System.out.println("DELETE OK");
+				} else {
 					System.out.println("DELETE FAIL !!!");
 				}
 			}

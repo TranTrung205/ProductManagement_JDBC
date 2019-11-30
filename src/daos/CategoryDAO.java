@@ -68,6 +68,7 @@ public class CategoryDAO {
 		if (n > 0) {
 			result = true;
 		}
+		con.close();
 		return result;
 	}
 
@@ -86,6 +87,7 @@ public class CategoryDAO {
 				result = newID;
 			}
 		}
+		con.close();
 		return result;
 	}
 
@@ -99,6 +101,7 @@ public class CategoryDAO {
 		if (n > 0) {
 			result = true;
 		}
+		con.close();
 		return result;
 	}
 
@@ -111,6 +114,7 @@ public class CategoryDAO {
 		if (n > 0) {
 			result = true;
 		}
+		con.close();
 		return result;
 	}
 }
