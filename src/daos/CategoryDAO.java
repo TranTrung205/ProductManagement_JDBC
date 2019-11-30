@@ -57,5 +57,18 @@ public class CategoryDAO {
 		con.close();
 		return cats;
 	}
+	
+	public static boolean insert(Category newCat) throws Exception{
+		//cach xu ly theo boolean
+		boolean result = false;
+		Connection con = jdbcUtil.getConnection();
+		PreparedStatement pst = con.prepareStatement("INSERT INTO Category(Name) VALUES(?)");
+		pst.setString(1, newCat.name);
+		int n = pst.executeUpdate();
+		if(n > 0) {
+			result = true;
+		}
+		return result;
+	}
 
 }

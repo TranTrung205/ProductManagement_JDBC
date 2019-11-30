@@ -14,6 +14,7 @@ public class MainClass {
 			System.out.println("1.Get all categories");
 			System.out.println("2.Get details a category");
 			System.out.println("3.Search category");
+			System.out.println("4.Add new category");
 			System.out.println("Please enter cmd: ");
 			int cmd = scan.nextInt();
 			if (cmd == 0)
@@ -92,6 +93,19 @@ public class MainClass {
 					System.out.println(cat.id + " | " + cat.name);
 				}
 //				con.close();
+			}
+			else if(cmd ==4) {
+				scan.nextLine(); //flush || clear buffer
+				System.out.println("Please input name: ");
+				String name = scan.nextLine();
+				Category newCat = new Category(0, name);
+				boolean result = CategoryDAO.insert(newCat);
+				if(result) {
+					System.out.println("INSERT OK");
+				}
+				else {
+					System.out.println("INSERT FAIL !!!");
+				}
 			}
 		}
 		scan.close();
