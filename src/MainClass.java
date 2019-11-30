@@ -15,6 +15,8 @@ public class MainClass {
 			System.out.println("2.Get details a category");
 			System.out.println("3.Search category");
 			System.out.println("4.Add new category");
+			System.out.println("5.Update category");
+			System.out.println("6.Delete a record");
 			System.out.println("Please enter cmd: ");
 			int cmd = scan.nextInt();
 			if (cmd == 0)
@@ -44,7 +46,7 @@ public class MainClass {
 				}
 				// con.close();
 			} else if (cmd == 2) {
-				System.out.println("Please enter ID: ");
+				System.out.println("Please enter ID to search: ");
 				int id = scan.nextInt();
 //				List<Category> cats = new ArrayList<Category>();
 //				Connection con = jdbcUtil.getConnection();
@@ -96,15 +98,49 @@ public class MainClass {
 			}
 			else if(cmd ==4) {
 				scan.nextLine(); //flush || clear buffer
-				System.out.println("Please input name: ");
+				System.out.println("Please input name to insert: ");
 				String name = scan.nextLine();
 				Category newCat = new Category(0, name);
-				boolean result = CategoryDAO.insert(newCat);
+//				boolean result = CategoryDAO.insert(newCat);
+//				if(result) {
+//					System.out.println("INSERT OK");
+//				}
+//				else {
+//					System.out.println("INSERT FAIL !!!");
+//				}
+				int newID = CategoryDAO.insert2int(newCat);
+				if(newID > 0) {
+					System.out.println("INSERT OK with ID : " + newID);
+				}
+				else {
+					System.out.println("INSERT FAIL");
+				}
+					
+			}
+			else if(cmd == 5) {
+				System.out.println("Please input ID you want to update: ");
+				int newID = scan.nextInt();
+				scan.nextLine();
+				System.out.println("Please input Name to update: ");
+				String newName = scan.nextLine();
+				Category newCat = new Category(newID, newName);
+				boolean result = CategoryDAO.update(newCat);
 				if(result) {
 					System.out.println("INSERT OK");
 				}
 				else {
 					System.out.println("INSERT FAIL !!!");
+				}
+			}
+			else if (cmd == 6) {
+				System.out.println("Please input ID you want to remove: ");
+				int removeID = scan.nextInt();
+				boolean result = CategoryDAO.delete(removeID);
+				if(result) {
+					System.out.println("DELETE OK");
+				}
+				else {
+					System.out.println("DELETE FAIL !!!");
 				}
 			}
 		}

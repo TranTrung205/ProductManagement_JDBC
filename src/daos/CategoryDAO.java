@@ -57,18 +57,60 @@ public class CategoryDAO {
 		con.close();
 		return cats;
 	}
-	
-	public static boolean insert(Category newCat) throws Exception{
-		//cach xu ly theo boolean
+
+	public static boolean insert(Category newCat) throws Exception {
+		// cach xu ly theo boolean
 		boolean result = false;
 		Connection con = jdbcUtil.getConnection();
 		PreparedStatement pst = con.prepareStatement("INSERT INTO Category(Name) VALUES(?)");
 		pst.setString(1, newCat.name);
 		int n = pst.executeUpdate();
-		if(n > 0) {
+		if (n > 0) {
 			result = true;
 		}
 		return result;
 	}
 
+	public static int insert2int(Category newCat) throws Exception {
+		int result = 0;
+		Connection con = jdbcUtil.getConnection();
+		// Them 1 du lieu de return ve key
+		PreparedStatement pst = con.prepareStatement("INSERT INTO Category(Name) VALUES(?)",
+				Statement.RETURN_GENERATED_KEYS);
+		pst.setString(1, newCat.name);
+		int n = pst.executeUpdate();
+		if (n > 0) {
+			ResultSet rs = pst.getGeneratedKeys();
+			if (rs.next()) { // insert 1 dong nen dung IF< con nhieu dong thi dung WHILE
+				int newID = rs.getInt(1);
+				result = newID;
+			}
+		}
+		return result;
+	}
+
+	public static boolean update(Category newCat) throws Exception {
+		boolean result = false;
+		Connection con = jdbcUtil.getConnection();
+		PreparedStatement pst = con.prepareStatement("UPDATE Category SET Name=? WHERE ID=?");
+		pst.setString(1, newCat.name);
+		pst.setInt(2, newCat.id);
+		int n = pst.executeUpdate();
+		if (n > 0) {
+			result = true;
+		}
+		return result;
+	}
+
+	public static boolean delete(int id) throws Exception {
+		boolean result = false;
+		Connection con = jdbcUtil.getConnection();
+		PreparedStatement pst = con.prepareStatement("DELETE FROM Category WHERE ID=?");
+		pst.setInt(1, id);
+		int n = pst.executeUpdate();
+		if (n > 0) {
+			result = true;
+		}
+		return result;
+	}
 }
